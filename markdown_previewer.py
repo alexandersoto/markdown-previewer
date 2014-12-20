@@ -223,7 +223,7 @@ class Server:
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        sys.exit("requires 2 args")
+        sys.exit("Usage: ./markdown_previewer.py MARKDOWN_FILE_TO_WATCH")
 
     file_name = sys.argv[1]
     file_path = os.path.abspath(os.path.join(os.getcwd(), file_name))
