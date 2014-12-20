@@ -63,7 +63,7 @@ def markdown_to_html(markdown_file_path):
     response = urllib2.urlopen(request)
     print "done!"
 
-# Display rate limiting information to user
+    # Display rate limiting information to user
     request_limit = int(response.info().get('X-RateLimit-Limit'))
     requests_remaining = int(response.info().get('X-RateLimit-Remaining'))
     reset_time = int(response.info().get('X-RateLimit-Reset'))
@@ -111,7 +111,7 @@ def time_to_readable_delta_string(seconds):
 
 def make_html(title, css, body):
 
-    # Using .format() makes this gross, but lightweight
+    # Using .format() makes this gross and requires double {{ everywhere, but it's lightweight
     # TODO: Think of a better solution
     html = """
     <!DOCTYPE html>
@@ -222,12 +222,6 @@ class Server:
 
 
 if __name__ == '__main__':
-    """
-    #import argparse
-    #parser = argparse.ArgumetParser(description="Render a markdown file on localhost")
-    #args = parser.parse_args()
-    """
-
     if len(sys.argv) != 2:
         sys.exit("requires 2 args")
 
