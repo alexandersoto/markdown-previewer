@@ -1,16 +1,11 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
-
-# C extensions
 *.so
 
 # Distribution / packaging
 .Python
 env/
 build/
-develop-eggs/
-dist/
 downloads/
 eggs/
 lib/
@@ -52,3 +47,11 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# VIM
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
