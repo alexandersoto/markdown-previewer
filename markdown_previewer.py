@@ -10,9 +10,9 @@ import thread
 import time
 import urllib2
 
-# TODO argument parsing - use argparse
-
-PORT = 8000
+# TODO add arguments for these values - use argparse
+HOST = 'localhost'
+PORT = 0
 GITHUB_API_ROOT = 'https://api.github.com'
 CSS_URL = 'https://raw.githubusercontent.com/sindresorhus/github-markdown-css/\
 gh-pages/github-markdown.css'
@@ -169,9 +169,9 @@ def make_html(title, css, body):
 
 
 class Server:
-    """ A server that will respond with given html on given port """
+    """ A server that will respond with given html on given host:port """
 
-    def __init__(self, port):
+    def __init__(self, host, port):
         class MyRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
             def log_message(self, format, *args):
@@ -190,13 +190,14 @@ class Server:
                 self.end_headers()
                 self.wfile.write(response)
 
-        self.port = port
         self.handler = MyRequestHandler
         self.thread = None
 
         # Let's us restart the server without having to wait for the port to be unblocked
         SocketServer.TCPServer.allow_reuse_address = True
-        self.server = SocketServer.TCPServer(("", port), self.handler)
+
+        self.server = SocketServer.TCPServer((host, port), self.handler)
+        self.host, self.port = self.server.server_address
 
     def start(self):
         self.thread = thread.start_new_thread(self.server.serve_forever, ())
@@ -220,7 +221,6 @@ class Server:
     def set_html(self, html):
         self.handler.html = html
 
-
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         sys.exit("Usage: ./markdown_previewer.py MARKDOWN_FILE_TO_WATCH")
@@ -229,10 +229,12 @@ if __name__ == '__main__':
     file_path = os.path.abspath(os.path.join(os.getcwd(), file_name))
 
     # Create and start the web server
-    server = Server(PORT)
+    print "Starting server..."
+    server = Server(HOST, PORT)
     server.set_file(file_path)
     server.start()
-    print("Serving {file_path} on port: {port}".format(file_path=file_path, port=PORT))
+    print("Serving {file_path} on : {host}:{port}".format(file_path=file_path,
+                                                          host=server.host, port=server.port))
 
     # Watch file for changes, and update the html if there is one
     last_modified = os.stat(file_path).st_ctime
