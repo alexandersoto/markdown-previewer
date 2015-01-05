@@ -233,8 +233,8 @@ if __name__ == '__main__':
     server = Server(HOST, PORT)
     server.set_file(file_path)
     server.start()
-    print("Serving {file_path} on : {host}:{port}".format(file_path=file_path,
-                                                          host=server.host, port=server.port))
+    print("Serving {file_path} on {host}:{port}".format(file_path=file_path,
+                                                        host=server.host, port=server.port))
 
     # Watch file for changes, and update the html if there is one
     last_modified = os.stat(file_path).st_ctime
