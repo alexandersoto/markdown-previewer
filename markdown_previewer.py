@@ -9,6 +9,7 @@ import sys
 import thread
 import time
 import urllib2
+import webbrowser
 
 # TODO add arguments for these values - use argparse
 HOST = 'localhost'
@@ -112,7 +113,7 @@ def time_to_readable_delta_string(seconds):
 def make_html(title, css, body):
 
     # Using .format() makes this gross and requires double {{ everywhere, but it's lightweight
-    # TODO: Think of a better solution
+    # TODO: Think of a better solution, potentially Template strings
     html = """
     <!DOCTYPE html>
     <html lang="en">
@@ -235,6 +236,9 @@ if __name__ == '__main__':
     server.start()
     print("Serving {file_path} on {host}:{port}".format(file_path=file_path,
                                                         host=server.host, port=server.port))
+
+    # Open page in a webbrowser
+    webbrowser.open("http://{host}:{port}".format(host=server.host, port=server.port))
 
     # Watch file for changes, and update the html if there is one
     last_modified = os.stat(file_path).st_ctime
